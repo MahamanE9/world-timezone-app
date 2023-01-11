@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="world-demo-api-ci-cd-pipeline-jenkin-githubFlow" doc:id="ace07b5c-51b6-4fe8-9824-86cd7cf97827" >
+		<http:listener doc:name="Listener" doc:id="86629d77-6718-447c-87ae-3a5a99121481" config-ref="HTTP_Listener_config" path="/timezone/{region}/{city}"/>
+		<http:request method="GET" doc:name="Request" doc:id="a91d3a14-2177-4a07-8769-5743c7ecc9f8" config-ref="HTTP_Request_configuration" path="/{region}/{city}">
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	city : attributes.uriParams.city,
+	region : attributes.uriParams.region
+}]]]></http:uri-params>
+		</http:request>
+		<logger level="INFO" doc:name="Logger" doc:id="5d9f883d-c8dc-4619-919b-1534910a3cb2" message="#[payload]"/>
+	</flow>
+</mule>
